@@ -2,66 +2,48 @@ import sys
 
 import qimage2ndarray
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QPushButton
-from PyQt5.QtCore import pyqtSlot, QTimer, Qt
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QPushButton, QMainWindow
+from PyQt5.QtCore import pyqtSlot, QTimer, Qt, QCoreApplication
 import cv2
 
 from classifier import ClassifierThread
-from frame_capture import VideoRecorderThread, Video
+from frame_capture import Video
 from queue import Queue
 
-class BabyMathApp(QWidget):
-    def __init__(self):
-        super().__init__()
+from gui.babymath_ui import Ui_BabyMath
+from constants import gui_constants as gui_const
+
+class BabyMathApp(QMainWindow):
+    def __init__(self, parent=None):
+        QMainWindow.__init__(self, parent=parent)
         self.title = 'BabyMathChallenge'
-        self.left = 100
-        self.top = 100
-        self.width = 640
-        self.height = 480
+        self.ui = Ui_BabyMath()
         self.frame_queue = Queue()
-        self.label = QLabel(self)
-        self.label_classifier = QLabel(self)
-        self.button = QPushButton("Quiter")
-        self.init_ui()
+        self.video = Video(self)
+        self.classifier = ClassifierThread(self, name="frame_classifier", args=self.frame_queue)
+        self.init_()
+
+    def shutdown(self):
+        self.video.terminate()
+        self.classifier.terminate()
+        QCoreApplication.quit()
 
     def set_image(self, rgbImage):
-        h, w, ch = rgbImage.shape
-        bytesPerLine = ch * w
-        convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-        p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
         self.frame_queue.put(rgbImage)
-        self.label.setPixmap(QPixmap.fromImage(p))
+        self.ui.camera_label.setPixmap(QPixmap.fromImage(qimage2ndarray.array2qimage(rgbImage)))
 
-    def classifier_out(self, message):
-        self.label_classifier.setText(message)
+    def set_p1_label(self, eval):
+        self.ui.p1_label.setText(eval)
 
-    def init_ui(self):
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
-        self.resize(1800, 1200)
-
-        layout = QVBoxLayout()
-        # Attach label to box layout
-        self.label_classifier.setText("HELLO")
-        layout.addWidget(self.label)
-        layout.addWidget(self.label_classifier)
-        layout.addWidget(self.button)
-        self.setLayout(layout)
-        video = Video(self)
-        classifier = ClassifierThread(self, name="frame_classifier", args=self.frame_queue)
-        self.connect(video.frame_acquired, classifier.receive, )
-        classifier.frame_processed.connect(self.classifier_out)
-        video.frame_acquired.connect(self.set_image)
-        video.start()
-        classifier.start()
-
-        self.show()
-
-
-app = QApplication([])
-window = BabyMathApp()
-
-app.exec_()
+    def init_(self):
+        self.ui.setupUi(self)
+        cma_placeholder = str(gui_const["images_dir"]+gui_const["cam_placeholder"])
+        self.ui.camera_label.setPixmap(QPixmap(cma_placeholder))
+        self.ui.quiter.clicked.connect(self.shutdown)
+        self.classifier.frame_processed.connect(self.set_p1_label)
+        self.video.frame_acquired.connect(self.set_image)
+        self.video.start()
+        self.classifier.start()
 
 
 # Currently stealing from

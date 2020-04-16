@@ -3,7 +3,7 @@ from queue import Queue
 import logging
 import time
 from queue import Queue
-
+from random import randint
 from PyQt5.QtCore import QThread, pyqtSignal
 
 logging.basicConfig(level=logging.DEBUG,
@@ -11,22 +11,23 @@ logging.basicConfig(level=logging.DEBUG,
 
 
 class ClassifierThread(QThread):
-    count = 0
     frame_processed = pyqtSignal(object)
 
     def __init__(self, group=None, target=None, name="frame_classifier",
                  args=(), kwargs=None, verbose=None):
         super(ClassifierThread, self).__init__()
-        self.name = name
+        self.setObjectName(name)
         self.queue = args
-
-    @pyqtSignal(object)
-    def receive(self, image):
-        self.count = self.count
-        self.frame_processed.emit(str("Received frame"))
 
     def run(self):
             logging.debug('Started classifier')
+            count = 0
+            while True:
+                image = self.queue.get(block=True, timeout=None)
+                count = count+1
+                if count == 100:
+                    count = 0
+                    self.frame_processed.emit("Classified as "+str(randint(1, 5)))
 
 
 
