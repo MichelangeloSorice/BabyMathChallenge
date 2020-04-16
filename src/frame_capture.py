@@ -1,15 +1,7 @@
-import cv2
-import threading
 import logging
 
-import qimage2ndarray
-from PyQt5.QtWidgets import  QWidget, QLabel, QApplication
-from PyQt5.QtCore import QThread, Qt, pyqtSignal, pyqtSlot, QTimer
-from PyQt5.QtGui import QImage, QPixmap
-from queue import Queue
-
-from logger import QPlainTextEditLogger
-
+import cv2
+from PyQt5.QtCore import QThread, pyqtSignal, QTimer
 
 logging.basicConfig(level=logging.DEBUG,
                     format='(%(threadName)-9s) %(message)s')

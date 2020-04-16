@@ -1,5 +1,7 @@
 import logging
+
 from PyQt5.QtWidgets import QApplication
+
 from gui_hw import BabyMathApp
 
 if __name__ == "__main__":

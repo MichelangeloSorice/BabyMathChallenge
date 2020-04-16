@@ -1,17 +1,16 @@
-import sys
-
-import qimage2ndarray
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QPushButton, QMainWindow
-from PyQt5.QtCore import pyqtSlot, QTimer, Qt, QCoreApplication
-import cv2
-
-from classifier import ClassifierThread
-from frame_capture import Video
 from queue import Queue
 
-from gui.babymath_ui import Ui_BabyMath
+import cv2
+import qimage2ndarray
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QMainWindow
+
+from classifier import ClassifierThread
 from constants import gui_constants as gui_const
+from frame_capture import Video
+from gui.babymath_ui import Ui_BabyMath
+
 
 class BabyMathApp(QMainWindow):
     def __init__(self, parent=None):
@@ -30,6 +29,8 @@ class BabyMathApp(QMainWindow):
 
     def set_image(self, rgbImage):
         self.frame_queue.put(rgbImage)
+        # Simple way to draw rectangle for players to position their hands, probably we will use gui for this
+        # cv2.rectangle(rgbImage, (0, 255), (300, 300), 1)
         self.ui.camera_label.setPixmap(QPixmap.fromImage(qimage2ndarray.array2qimage(rgbImage)))
 
     def set_p1_label(self, eval):

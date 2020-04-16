@@ -1,9 +1,6 @@
-import threading
-from queue import Queue
 import logging
-import time
-from queue import Queue
 from random import randint
+
 from PyQt5.QtCore import QThread, pyqtSignal
 
 logging.basicConfig(level=logging.DEBUG,
