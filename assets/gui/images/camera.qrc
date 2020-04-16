@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="img_">
+    <file>video-camera-icon.jpg</file>
+  </qresource>
+</RCC>

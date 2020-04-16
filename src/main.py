@@ -26,6 +26,7 @@ def main():
     signal.signal(signal.SIGINT, service_shutdown)
 
     frame_queues = {
+        "display_queue": Queue(),
         "p1_queue": Queue(),
         "p2_queue": Queue()
     }
