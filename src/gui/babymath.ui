@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>945</width>
-    <height>768</height>
+    <width>941</width>
+    <height>759</height>
    </rect>
   </property>
   <property name="font">
@@ -30,12 +30,18 @@
      <rect>
       <x>40</x>
       <y>28</y>
-      <width>851</width>
+      <width>841</width>
       <height>531</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::HLine</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
@@ -46,11 +52,11 @@
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
     </property>
-    <property name="pixmap">
-     <pixmap>:/img_/video-camera-icon.jpg</pixmap>
-    </property>
     <property name="scaledContents">
      <bool>false</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
     <property name="wordWrap">
      <bool>false</bool>
@@ -125,25 +131,6 @@
      <string>QUIT</string>
     </property>
    </widget>
-   <widget class="QLabel" name="p1_handmarker">
-    <property name="geometry">
-     <rect>
-      <x>44</x>
-      <y>450</y>
-      <width>171</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="lineWidth">
-     <number>2</number>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
@@ -151,7 +138,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>945</width>
+     <width>941</width>
      <height>26</height>
     </rect>
    </property>
