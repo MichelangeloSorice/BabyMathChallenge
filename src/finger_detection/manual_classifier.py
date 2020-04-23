@@ -20,14 +20,21 @@ cv.setWindowProperty(WindowName, cv.WND_PROP_FULLSCREEN, cv.WINDOW_FULLSCREEN)
 cv.setWindowProperty(WindowName, cv.WND_PROP_FULLSCREEN, cv.WINDOW_NORMAL)
 
 count = 0
-per_type_samples = [0, 0, 0, 0, 0]
+per_type_samples = [0, 0, 0, 0, 0, 0]
+
+already_classified = sorted(os.listdir(test))
+count = len(already_classified)
+
 
 for file in os.listdir(unlabelled):
+    if file.startswith('.'):
+        continue
     if file.endswith(".jpg"):
         filepath = os.path.join(unlabelled, file)
         # print(filepath)
 
         img = cv.imread(filepath)
+        print(img.shape)
         cv.imshow(view_window, img)
 
         # Extracting waitKey code to classify images, any code out of range implicitly means bad capture

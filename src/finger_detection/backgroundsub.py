@@ -64,6 +64,7 @@ while True:
     # Every frame is used both for calculating the foreground mask and for updating the background
     # We can modify the learning rate of the function
     fgmask = backSub.apply(frame_crop, fgmask, learning_rate)
+    print(fgmask.shape)
 
     # Erosion, Dilatation and Morphology transformations
     # EROSION -  A pixel in the original image (either 1 or 0) will be considered 1 only if all the pixels under the
