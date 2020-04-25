@@ -22,9 +22,16 @@ cv.setWindowProperty(WindowName, cv.WND_PROP_FULLSCREEN, cv.WINDOW_NORMAL)
 count = 0
 per_type_samples = [0, 0, 0, 0, 0, 0]
 
-already_classified = sorted(os.listdir(test))
+already_classified = os.listdir(test)
 count = len(already_classified)
+for name in already_classified:
+    split = name.split("_")
+    val = int(split[0])
+    count = max(count, int(split[-1].split(".")[0]))
+    per_type_samples[val] = per_type_samples[val]+1
 
+print(per_type_samples)
+print(count)
 
 for file in os.listdir(unlabelled):
     if file.startswith('.'):
@@ -34,16 +41,17 @@ for file in os.listdir(unlabelled):
         # print(filepath)
 
         img = cv.imread(filepath)
-        print(img.shape)
         cv.imshow(view_window, img)
 
         # Extracting waitKey code to classify images, any code out of range implicitly means bad capture
         res = cv.waitKey(0) - 48
-        if 0 <= res <= 5 and per_type_samples[res] < 100:
+        if 0 <= res <= 5 and per_type_samples[res] < 1000:
             testfile = os.path.join(test, str(res) + "_rh_" + str(count) + ".jpg")
             cv.imwrite(testfile, img)
-            os.remove(filepath)
             count = count + 1
             per_type_samples[res] = per_type_samples[res]+1
+            if per_type_samples[res] == 1000:
+                break
 
+        os.remove(filepath)
         cv.destroyAllWindows()

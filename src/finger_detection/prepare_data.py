@@ -12,6 +12,9 @@ predictions = list()
 for file in os.listdir(test):
     filepath = os.path.join(test, file)
     img = cv.imread(filepath)
+    if img is None:
+        print(filepath)
+        continue
     # All 3 channels are identical
     matrix = np.asarray((img[:, :, 0:1] / 255), dtype=int)
     pred = int(file.split('_')[0])
