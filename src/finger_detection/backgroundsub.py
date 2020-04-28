@@ -87,22 +87,31 @@ while True:
     # We can modify the learning rate of the function
     fgmask1 = backSub1.apply(frame_cropp1, fgmask1, learning_rate)
 
+    pred_p1 = "Learning BG..."
+
     if learning_rate == 0:
         fgmask1 = morph(fgmask1)
+        res_1 = cv.resize(fgmask1, (40, 40), interpolation=cv.INTER_AREA)
 
-    res_1 = cv.resize(fgmask1, (40,40), interpolation=cv.INTER_AREA)
-    pred_p1 = "Detect BG..."
+        if model is not None:
+            pred_p1 = pred(res_1)
+        else:
+            pred_p1 = "?"
 
-    if learning_rate == 0 and not collect:
-        pred_p1 = pred(res_1)
-    elif learning_rate == 0:
-        f = os.path.join(unlabelled, "rh_"+str(count)+".jpg")
-        cv.imwrite(f, res_1)
+        if collect:
+            f = os.path.join(unlabelled, "rh_"+str(count)+".jpg")
+            cv.imwrite(f, res_1)
 
     cv.putText(frame, pred_p1, (10, 122), cv.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
 
     # Show the current frame and the fg masks
-    cv.imshow('Frame', frame)
+
     cv.imshow('MASK 1', fgmask1)
+    cv.imshow('Frame', frame)
 
     keyboard = cv.waitKey(1)
+    if keyboard == 27:
+        break
+
+cv.destroyAllWindows()
+cap.release()

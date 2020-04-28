@@ -23,6 +23,7 @@ class BabyMathApp(QMainWindow):
 
     def closeEvent(self, event):
         # Make it close properly
+        self.video.cap.release()
         self.video.terminate()
         QCoreApplication.quit()
 
