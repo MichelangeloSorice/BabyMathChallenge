@@ -10,5 +10,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
     babymath_app = BabyMathApp()
+    babymath_app.setWindowTitle('Finger count')
     babymath_app.show()
     sys.exit(app.exec_())

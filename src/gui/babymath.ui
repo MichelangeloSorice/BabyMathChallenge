@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1012</width>
+    <width>769</width>
     <height>620</height>
    </rect>
   </property>
@@ -56,39 +56,6 @@
           <number>1</number>
          </property>
          <item>
-          <widget class="QLabel" name="p1_label">
-           <property name="minimumSize">
-            <size>
-             <width>106</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>110</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="layoutDirection">
-            <enum>Qt::RightToLeft</enum>
-           </property>
-           <property name="autoFillBackground">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QLabel" name="camera_label">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -122,39 +89,6 @@
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QLabel" name="p2_label">
-           <property name="minimumSize">
-            <size>
-             <width>106</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>110</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="layoutDirection">
-            <enum>Qt::RightToLeft</enum>
-           </property>
-           <property name="autoFillBackground">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
         </layout>
        </widget>
       </item>
@@ -181,6 +115,12 @@
         </property>
         <item>
          <widget class="QPushButton" name="detectbg_btn">
+          <property name="minimumSize">
+           <size>
+            <width>15</width>
+            <height>79</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
             <width>125</width>
@@ -215,36 +155,6 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QPushButton" name="play_btn">
-          <property name="minimumSize">
-           <size>
-            <width>15</width>
-            <height>79</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>125</width>
-            <height>130</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>14</pointsize>
-           </font>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="text">
-           <string extracomment="Let's do some dummy math!">PLAY</string>
-          </property>
-          <property name="autoDefault">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
      </layout>
@@ -256,8 +166,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1012</width>
-     <height>26</height>
+     <width>769</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

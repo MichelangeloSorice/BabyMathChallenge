@@ -29,7 +29,6 @@ def plot_history(history, test_out):
     plt.savefig(loss_plot)
     plt.show()
 
-
 def save_history(history, test_out):
     history_csv_file = os.path.join(test_out, 'history.csv')
 
@@ -80,21 +79,6 @@ model = Sequential([
     Dropout(0.5),
     Dense(6, activation='softmax'),
 ])
-
-'''model = Sequential([
-    Flatten(),
-    Dense(512, kernel_regularizer=regularizers.l2(0.001),
-          input_shape=(40, 40, 1), activation='elu'),
-    Dense(512, kernel_regularizer=regularizers.l2(0.001),
-          activation='elu'),
-    Dense(512, kernel_regularizer=regularizers.l2(0.001),
-          activation='elu'),
-    #Dropout(0.25),
-    #Dense(128, activation='relu'),
-    #Dropout(0.5),
-    Dense(6, activation='softmax'),
-])'''
-
 
 # Use sparse version of categorical crossentropy as sample can have a single class - NB requires data as single array
 model.compile('adam', loss=SparseCategoricalCrossentropy(), metrics=['sparse_categorical_accuracy'])

@@ -8,4 +8,4 @@ do
     python -m PyQt5.uic.pyuic -x "$ui_file" -o "$out_file"
 done
 
-sleep 10
+echo "All up to date!"

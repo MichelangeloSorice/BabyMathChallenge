@@ -7,7 +7,7 @@ gui_constants = {
 
 classifier = {
     "input_shape": (40, 40, 1),
-    "bg_learning_history": 150,
+    "bg_learning_history": 200,
     # crop parameters for p1 and p2
     "player1": [0, 202, 128, 330],
     "player2": [438, 640, 128, 330]
