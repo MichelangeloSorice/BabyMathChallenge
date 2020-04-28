@@ -1,5 +1,3 @@
-from queue import Queue
-
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QMainWindow
@@ -15,9 +13,12 @@ class BabyMathApp(QMainWindow):
         QMainWindow.__init__(self, parent=parent)
         self.title = 'BabyMathChallenge'
         self.ui = Ui_BabyMath()
-        self.frame_queue = Queue()
+
         self.video = Video(self)
         self.classifier = Classifier()
+        self.learning_bg = False
+        self.pred = ["?", "?"]
+
         self.init_()
 
     def closeEvent(self, event):
@@ -25,16 +26,26 @@ class BabyMathApp(QMainWindow):
         self.video.terminate()
         QCoreApplication.quit()
 
+    def start_bgacquisition(self):
+        self.classifier.reset_bg()
+        self.learning_bg = True
+        self.ui.play_btn.setDisabled(True)
+        self.ui.dialog.setText("Acquiring background...")
+
     def process_image(self, frame):
-        if self.classifier.learning_history < 150:
+        if self.learning_bg:
             self.classifier.learn_background(frame)
-            pred = ["?","?"]
-        else:
-            pred = self.classifier.predict(frame)
+            if self.classifier.bg_acquired:
+                self.learning_bg = False
+                self.ui.play_btn.setDisabled(False)
+                self.ui.dialog.setText("Background acquired, READY!")
+
+        elif self.classifier.bg_acquired:
+            self.pred = self.classifier.process_frame(frame)
 
         img = QImage(frame, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
         self.ui.camera_label.setPixmap(QPixmap.fromImage(img))
-        self.setlabels(pred)
+        self.setlabels(self.pred)
 
     def setlabels(self, pred):
         self.ui.p1_label.setText(str(pred[0]))
@@ -42,12 +53,15 @@ class BabyMathApp(QMainWindow):
 
     def init_(self):
         self.ui.setupUi(self)
-        cma_placeholder = str(gui_const["images_dir"]+gui_const["cam_placeholder"])
+        #cma_placeholder = str(gui_const["images_dir"]+gui_const["cam_placeholder"])
+        #self.ui.camera_label.setPixmap(QPixmap(cma_placeholder))
 
-        self.ui.camera_label.setPixmap(QPixmap(cma_placeholder))
         self.video.frame_acquired.connect(self.process_image)
         self.video.start()
         self.video.timer.start(gui_const["fps"])
+
+        self.ui.play_btn.setDisabled(True)
+        self.ui.detectbg_btn.clicked.connect(self.start_bgacquisition)
 
 
 # Currently stealing from

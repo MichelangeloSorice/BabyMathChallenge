@@ -2,13 +2,20 @@ from random import shuffle
 import numpy as np
 import cv2 as cv
 import os
-from keras.utils.np_utils import to_categorical
+from constants import classifier as cls
+
+
+def dim(cur_shape, scale):
+    nwidth = cur_shape[1] * scale / 100
+    nheight = cur_shape[0] * scale / 100
+    return int(nwidth), int(nheight)
 
 
 def load_and_prepare(path):
     data, predictions = list(), list()
     raw_files = os.listdir(path)
     shuffle(raw_files)
+    width, height, depth = cls["input_shape"]
 
     for file in raw_files:
         filepath = os.path.join(path, file)
@@ -19,6 +26,8 @@ def load_and_prepare(path):
             input('Press any key to continue: ')
             continue
 
+        img = cv.resize(img, (width, height), interpolation=cv.INTER_AREA)
+
         # All 3 channels are identical
         matrix = np.asarray((img[:, :, 0:1] / 255), dtype=int)
         pred = int(file.split('_')[0])
@@ -26,7 +35,7 @@ def load_and_prepare(path):
         data.append(matrix)
         predictions.append(pred)
 
-    return np.array(data), to_categorical(np.array(predictions))
+    return np.array(data), np.array(predictions)
 
 
 # Main script
@@ -49,4 +58,5 @@ print("Test set --")
 print(test_data.shape)
 print(test_predictions.shape)
 np.save(os.path.join(dataset, 'test_data'), test_data)
+
 np.save(os.path.join(dataset, 'test_pred'), test_predictions)

@@ -6,11 +6,10 @@ gui_constants = {
 }
 
 classifier = {
-    # num_filters, filters_size, pool_size
-    "model_parameters": [3, 3, 2],
-    "input_shape": (202, 202, 1),
+    "input_shape": (40, 40, 1),
+    "bg_learning_history": 150,
     # crop parameters for p1 and p2
     "player1": [0, 202, 128, 330],
-    "player2": [0, 202, 128, 330]
+    "player2": [438, 640, 128, 330]
 }
 

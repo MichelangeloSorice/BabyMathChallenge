@@ -1,6 +1,7 @@
 .idea
 BabyMathChallenge.iml
 src/finger_detection/test
+src/finger_detection/train
 src/finger_detection/unlabelled
 src/finger_detection/dataset
 src/finger_detection/*.h5
