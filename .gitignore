@@ -1,5 +1,5 @@
 .idea
-BabyMathChallenge.iml
+FingerDetection.iml
 src/finger_detection/test
 src/finger_detection/train
 src/finger_detection/unlabelled

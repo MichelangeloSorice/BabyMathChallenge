@@ -1,10 +1,15 @@
 import os
 from random import shuffle
-
 import cv2 as cv
+from constants import classifier as cls
 
+
+'''
+Script for manual classification of unlabelled ROI captures
+'''
+
+# Setting up directories
 path = os.getcwd()
-
 test = os.path.join(path, "test")
 unlabelled = os.path.join(path, "unlabelled")
 
@@ -38,6 +43,7 @@ print(count)
 
 todo = os.listdir(unlabelled)
 shuffle(todo)
+
 
 for file in todo:
     if file.startswith('.'):

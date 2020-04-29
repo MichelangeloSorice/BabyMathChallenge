@@ -45,7 +45,7 @@ def morph(fgmask):
 # Creating folder for captures
 cwd, unlabelled = create_data_folder()
 
-#Creating b
+# Starting video capture
 cap = cv.VideoCapture(0)
 
 # Variables used for foreground mask creation
@@ -58,6 +58,7 @@ fgmask1 = None
 model = load_from(cwd)
 
 count = 0
+# If set to true captures are collected
 collect = False
 
 while True:

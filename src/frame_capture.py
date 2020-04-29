@@ -4,10 +4,8 @@ import cv2
 from PyQt5.QtCore import QThread, pyqtSignal, QTimer
 from constants import classifier as clconst
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='(%(threadName)-9s) %(message)s')
 
-
+# Video thread for capturing frames
 class Video(QThread):
     frame_acquired = pyqtSignal(object)
 
@@ -20,11 +18,12 @@ class Video(QThread):
         self.cap = cv2.VideoCapture(0)
         self.timer = QTimer()
 
-        # Basic parameters for drawing on frame
-        self.p1x0, self.p1x1, self.p1y0, self.p1y1 = clconst["player1"]
+        # Basic parameters for drawing ROI on frame
+        self.p1x0, self.p1x1, self.p1y0, self.p1y1 = clconst["roi"]
 
     def emit_frame(self):
         ret, frame = self.cap.read()
+        # Drawing ROI on frame
         cv2.rectangle(frame, (self.p1x0, self.p1y0), (self.p1x1, self.p1y1), (0, 0, 255),  1)
         self.frame_acquired.emit(frame)
 

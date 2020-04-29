@@ -7,8 +7,15 @@ from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
 from keras.models import Sequential
 from keras.losses import SparseCategoricalCrossentropy
 
+'''
+Script for training and collecting model metrics
+Input   ---- ./dataset/ {test_data.npy, test_pred.npy, train_data.npy, train_pred.npy}
+Output  ---- ./training_res/ {model.h5, history.csv, loss_plt.png}
+'''
 
-def create_out_folder(dir):
+
+def create_out_folder():
+    dir = os.path.join(path, "training_res")
     try:
         os.mkdir(dir)
     except OSError:
@@ -29,44 +36,38 @@ def plot_history(history, test_out):
     plt.savefig(loss_plot)
     plt.show()
 
+
 def save_history(history, test_out):
     history_csv_file = os.path.join(test_out, 'history.csv')
-
     # convert the history.history dict to a pandas DataFrame:
     hist_df = pd.DataFrame(history.history)
     with open(history_csv_file, mode='w') as f:
         hist_df.to_csv(f)
 
 
-def save_summary(model, test_out):
-    summary_file = os.path.join(test_out, 'model_summary.txt')
-    print(model.summary(), file=open(summary_file, 'w'))
-
-
 path = os.getcwd()
 dataset = os.path.join(path, "dataset")
-test_out = create_out_folder(os.path.join(path, "training_res"))
+out_dir = create_out_folder()
 
-# loading data
+# loading train data
 train_data = np.load(os.path.join(dataset, "train_data.npy"))
 train_pred = np.load(os.path.join(dataset, "train_pred.npy"))
 
+# loading test data
 test_data = np.load(os.path.join(dataset, "test_data.npy"))
 test_pred = np.load(os.path.join(dataset, "test_pred.npy"))
 
-# Shuffling data
+
+# Shuffling
 idx = np.random.permutation(len(train_data))
 trdata_sh, trpred_sh = train_data[idx], train_pred[idx]
 
 idx = np.random.permutation(len(test_data))
 tsdata_sh, tspred_sh = test_data[idx], test_pred[idx]
 
-print(train_data.shape)
-print(train_pred.shape)
-print(test_data.shape)
-print(test_pred.shape)
 
-# Preparing model
+# --------- MODEL DEFINITION ----------------
+
 overfitCallback = EarlyStopping(monitor='val_loss', patience=10)
 
 model = Sequential([
@@ -85,7 +86,7 @@ model.compile('adam', loss=SparseCategoricalCrossentropy(), metrics=['sparse_cat
 
 history = model.fit(trdata_sh, trpred_sh, validation_data=(tsdata_sh, tspred_sh), epochs=100, callbacks=[overfitCallback])
 
-model.save(os.path.join(test_out, 'model.h5'))
-save_history(history, test_out)
-plot_history(history, test_out)
-save_summary(model, test_out)
+model.save(os.path.join(out_dir, 'model.h5'))
+save_history(history, out_dir)
+plot_history(history, out_dir)
+

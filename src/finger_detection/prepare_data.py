@@ -4,8 +4,13 @@ import cv2 as cv
 import os
 from constants import classifier as cls
 
+'''
+Script for converting labelled captures under ./train and ./test 
+into normalized numpy array to feed model training 
+'''
 
-def dim(cur_shape, scale):
+
+def scale_dim(cur_shape, scale):
     nwidth = cur_shape[1] * scale / 100
     nheight = cur_shape[0] * scale / 100
     return int(nwidth), int(nheight)
