@@ -11,7 +11,6 @@ def pred(mask):
     pred = np.argmax(model.predict(data), axis=1)
     return str(pred[0])
 
-
 def create_data_folder():
     # Creating a directory to store bgmasks
     cwd = os.getcwd()
@@ -31,11 +30,6 @@ def load_from(cwd):
     return models.load_model(os.path.join(cwd, 'training_res', 'model.h5'))
 
 
-def dim(cur_shape, scale):
-    n_width = cur_shape[1] * scale / 100
-    n_height = cur_shape[0] * scale / 100
-    return int(n_width), int(n_height)
-
 # Erosion, Dilatation and Morphology transformations
 # EROSION -  A pixel in the original image (either 1 or 0) will be considered 1 only if all the pixels under the
 #   kernel is 1, otherwise it is eroded (made to zero).
@@ -54,33 +48,31 @@ cwd, unlabelled = create_data_folder()
 #Creating b
 cap = cv.VideoCapture(0)
 
+# Variables used for foreground mask creation
 backSub1 = cv.createBackgroundSubtractorMOG2(varThreshold=50, detectShadows=False)
 learning_rate = -1
-
 kernel = np.ones((3, 3), np.uint8)
 fgmask1 = None
 
+# Loading neural network model
 model = load_from(cwd)
 
 count = 0
-keep = 0
 collect = False
 
 while True:
     ret, frame = cap.read()
-
     count = count+1
 
     if count == 200 and learning_rate != 0:
         print("Stop learning --- getReady!")
-        #input("Press any key")
         learning_rate = 0
         count = 0
 
-    # print(frame.shape)
-    cv.rectangle(frame, (0, 128), (202, 330), (0,0,255),  1)
+    # Drawing detection area
+    cv.rectangle(frame, (0, 128), (202, 330), (0, 0, 255),  1)
 
-    # Cropping the frame
+    # Cropping the frame on detection area
     frame_cropp1 = frame[128:330, 0:202]
 
     # Every frame is used both for calculating the foreground mask and for updating the background
@@ -105,7 +97,6 @@ while True:
     cv.putText(frame, pred_p1, (10, 122), cv.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
 
     # Show the current frame and the fg masks
-
     cv.imshow('MASK 1', fgmask1)
     cv.imshow('Frame', frame)
 
